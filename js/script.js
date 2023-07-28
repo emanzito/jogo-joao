@@ -1,5 +1,3 @@
-//Alternar os sons 'ole' e 'oof' ao tocar no objeto 'pipe'
-
 const joao = document.querySelector('.joao')
 const pipe = document.querySelector('.pipe')
 const nuvens = document.querySelector('.nuvens')
@@ -8,7 +6,13 @@ const oofSound = document.querySelector('.oof');
 const perdeuSound = document.querySelector('.perdeu');
 let isPerdeuSound = false
 
-
+const playPerdeuSound = () => {
+    if (!isPerdeuSound) {
+      isPerdeuSound = true;
+      perdeuSound.currentTime = 0;
+      perdeuSound.play();
+    }
+  };
 
 const jump = () => {
     joao.classList.add('jump')
@@ -17,8 +21,8 @@ const jump = () => {
         joao.classList.remove('jump')
     }, 500)
 
-    oleSound.currentTime = 0;
-    oleSound.play();
+    oleSound.currentTime = 0
+    oleSound.play()
 
 }
 
@@ -45,6 +49,8 @@ const loop = setInterval(() => {
         
         nuvens.style.animation = 'none'
         nuvens.style.left = `${nuvensPosition}px`
+
+        playPerdeuSound()
         
     }
 }, 10)
