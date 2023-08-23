@@ -2,6 +2,7 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+
 }
 
 .game-board {
@@ -37,6 +38,25 @@
     position: absolute;
     animation: nuvens 10s infinite linear;
 }
+
+.lose {
+    width: 400px;
+    margin: 0;
+    position: absolute;
+    left: 500px;
+    
+}
+
+.rodape {
+    font: normal 13pt Arial;
+}
+
+.rodape p {
+    display: inline;
+    margin-right: 100px;
+
+}
+
 
 @keyframes pipe-animation {
     from {
