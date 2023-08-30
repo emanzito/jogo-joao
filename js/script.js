@@ -1,23 +1,20 @@
+const joao = document.querySelector('.joao');
+const pipe = document.querySelector('.pipe');
+const perdeu = document.querySelector('.lose');
+const oleSound = document.querySelector('.ole');
+const perdeuSound = document.querySelector('.perdeu');
+const nuvens = document.querySelector('.nuvens');
 
-const joao = document.querySelector('.joao')
-const pipe = document.querySelector('.pipe')
-const perdeu = document.querySelector('.lose')
-const oleSound = document.querySelector('.ole')
-const oofSound = document.querySelector('.oof')
-const nuvens = document.querySelector('.nuvens')
-const perdeuSound = document.querySelector('.perdeu')
-let isPerdeuSound = false
+let isGameOver = false;
+let nuvensPosition = 0; 
 
 const playPerdeuSound = () => {
-    if (!isPerdeuSound) {
-      isPerdeuSound = true
-      perdeuSound.currentTime = 0
-      perdeuSound.play()
-    }
-  };
+    perdeuSound.currentTime = 0;
+    perdeuSound.play();
+};
 
-  const jump = () => {
-    if (!isPerdeuSound) { // Check if the game has not ended yet
+const jump = () => {
+    if (!isGameOver) {
         joao.classList.add('jump');
 
         setTimeout(() => {
@@ -27,72 +24,70 @@ const playPerdeuSound = () => {
         oleSound.currentTime = 0;
         oleSound.play();
     }
-}
-
-const restartGame = () => {
-    joao.src = "./imagens/andar.jpg"
-    joao.style.width = "100px"
-    joao.style.animation = "jump 500ms ease-out"
-    joao.style.bottom = `0px`
-    joao.style.left = `0px`
-    // Reinicie as variáveis ou estilos que você precisa
-
-    
-    // Defina a animação do pipe novamente
-    pipe.style.animation = "pipe-animation 1.5s infinite linearntg";
-
-    // Defina a animação das nuvens novamente
-    nuvens.style.animation = "nuvens";
-    
-    // Resto do código...
 };
 
 
-// Adicione um evento de clique à imagem "perdeu"
-perdeu.addEventListener('click', restartGame)
+const checkCollision = () => {
+    const pipePosition = pipe.offsetLeft;
+    const joaoPosition = +window.getComputedStyle(joao).bottom.replace('px', '');
 
-
-const loop = setInterval(() => {
-    
-    const pipePosition = pipe.offsetLeft
-    const joaoPosition = +window.getComputedStyle(joao).bottom.replace('px', '')
-    const nuvensPosition = nuvens.offsetLeft
-
-    console.log(joaoPosition)
-
-    if (pipePosition <= 89 && pipePosition > 0 && joaoPosition < 105) {  //só é executado quando o joao bate no pipe(perde o jogo)
-
-        pipe.style.animation = 'none' //o pipe perde a animação e fica parado
-        pipe.style.left = `${pipePosition}px`
-
-        joao.style.animation = 'none' //o joao fica sem animação e muda a imagem 
-        joao.style.bottom = `${joaoPosition}px`
-        joao.src = "./imagens/parado.jpg"
-        
-        joao.style.width = '75px'
-        joao.style.marginLeft = '20px'
-        
-        nuvens.style.animation = 'none' //retira a animação das nuvens quando perde
-        nuvens.style.left = `${nuvensPosition}px`
-
-        perdeu.src = "./imagens/perdeuotr.png" //adiciona uma imagem ao perder
-        perdeu.style.cursor = 'pointer'  //o cursor fica pointer
-
-        
-
-        playPerdeuSound()
-        clearInterval(loop)
-
-
+    if (pipePosition <= 89 && pipePosition > 0 && joaoPosition < 105) {
+        gameOver();
     }
-}, 10)
+};
 
 
-document.addEventListener('keydown', jump)
+const gameOver = () => {
+    isGameOver = true;
+    playPerdeuSound();
+
+    pipe.style.animation = 'none';
+    joao.style.animation = 'none';
+    joao.src = './imagens/parado.jpg';
+    joao.style.width = '75px';
+    joao.style.marginLeft = '20px';
+    perdeu.src = './imagens/perdeuotr.png';
+    perdeu.style.cursor = 'pointer';
+    nuvens.style.animation = 'none';
+    nuvens.style.left = `${nuvensPosition}px`
+};
+
+const restartGame = () => {
+    isGameOver = false;
+    nuvensPosition = window.innerWidth;
+
+    pipe.style.right = '-80px';
+    pipe.style.animation = 'pipe-animation 1.5s infinite linear';
+    joao.style.animation = ''; 
+    joao.style.bottom = '0'; 
+    joao.src = './imagens/andar.jpg';
+    joao.style.width = '100px';
+    perdeu.src = '';
+    perdeu.style.cursor = 'auto';
+    
+    
+    nuvens.style.animation = 'nuvens-animation 20s linear infinite';
+    
+    loop = setInterval(() => {
+        checkCollision();
+    }, 10);
+};
 
 
+perdeu.addEventListener('click', restartGame);
 
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'Space') { 
+        jump();
+    }
+});
 
+let loop = setInterval(() => {
+    checkCollision();
 
-
-
+    if (isGameOver) {
+        nuvens.style.animation = 'none';
+        nuvens.style.left = `${nuvensPosition}px`;
+        joao.style.animation = 'none';
+    }
+}, 10);
