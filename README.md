@@ -1,2 +1,3 @@
 # Jogo do João
-Neste jogo básico em 2d tem o player "João" e o obstáculo "Pipe" do jogo mário, se o João colidir com o Pipe o jogo termina e tem a opção de voltar a jogar. Espero que gostem do jogo!
+
+On this basic game in 2d you have the player "João" and the obstacule "Pipe" of Mario game, if "João" colide wiht the "Pipe" the game ends and you have the option to play again. Hope you like!
