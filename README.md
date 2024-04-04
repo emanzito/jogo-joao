@@ -4,7 +4,7 @@ On this basic game in 2d you have the player "João" and the obstacule "Pipe" of
 
 ## License
 
-This project is licensed under the IT License.
+This project is licensed under the MIT License.
 
 ### Modifications to the License
 
